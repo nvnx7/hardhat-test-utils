@@ -1,4 +1,7 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+chai.use(chaiAsPromised);
+
 import { useEnvironment } from './helpers';
 
 describe('block', function () {
@@ -55,11 +58,11 @@ describe('block', function () {
       expect(await block.latestBlockNumber()).to.equal(latestBlock.number);
     });
 
-    it('advances block by', async function () {
+    it('advances block by a number', async function () {
       const block = this.hre.testUtils.block;
 
       const startBlock = await block.latestBlockNumber();
-      await block.advanceBlockBy(420);
+      await block.advanceBlock(420);
       expect(await block.latestBlockNumber()).to.equal(startBlock + 420);
     });
 
@@ -69,6 +72,22 @@ describe('block', function () {
       const startBlock = await block.latestBlockNumber();
       await block.advanceBlock();
       expect(await block.latestBlockNumber()).to.equal(startBlock + 1);
+    });
+
+    it('advances block to number', async function () {
+      const block = this.hre.testUtils.block;
+
+      const startBlock = await block.latestBlockNumber();
+      await block.advanceBlockTo(startBlock + 420);
+      expect(await block.latestBlockNumber()).to.equal(startBlock + 420);
+    });
+
+    it('throws for past block advance', async function () {
+      const block = this.hre.testUtils.block;
+
+      await block.advanceBlock(66);
+      const latestBlock = await block.latestBlockNumber();
+      await expect(block.advanceBlockTo(latestBlock - 1)).to.eventually.be.rejectedWith(Error);
     });
   });
 });
