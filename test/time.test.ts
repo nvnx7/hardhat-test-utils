@@ -1,8 +1,5 @@
-import chai, { expect } from 'chai';
-import { solidity } from 'ethereum-waffle';
+import { expect } from 'chai';
 import { useEnvironment } from './helpers';
-
-chai.use(solidity);
 
 describe('time', function () {
   useEnvironment('hardhat-project');
