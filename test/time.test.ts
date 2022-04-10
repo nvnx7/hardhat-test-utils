@@ -49,7 +49,7 @@ describe('time', function () {
     });
   });
 
-  describe.only('Time Forward', function () {
+  describe('Time Forward', function () {
     const TOLERANCE_SEC = 2;
 
     it('increases time', async function () {
