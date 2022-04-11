@@ -4,7 +4,7 @@ import { useEnvironment } from './helpers';
 
 chai.use(solidity);
 
-describe.only('network', function () {
+describe('network', function () {
   useEnvironment('hardhat-project');
 
   it('snapshots network state', async function () {
