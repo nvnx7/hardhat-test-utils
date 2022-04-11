@@ -4,7 +4,7 @@ import '@nomiclabs/hardhat-ethers';
 import '../../../src/index';
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.13',
+  solidity: '0.8.7',
 };
 
 export default config;
