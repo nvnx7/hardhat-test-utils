@@ -1,7 +1,9 @@
 import { HardhatEthers } from '../types';
 
 function TimeUtils(ethers: HardhatEthers) {
-  const latest = (): Promise<number> => ethers.provider.getBlock('latest').then(b => b.timestamp);
+  const { provider } = ethers;
+
+  const latest = (): Promise<number> => provider.getBlock('latest').then(b => b.timestamp);
 
   const increase = async (sec: number): Promise<number> => {
     const n = parseInt(`${sec}`);
@@ -9,8 +11,8 @@ function TimeUtils(ethers: HardhatEthers) {
       throw Error(`Invalid number of seconds argument: ${sec}`);
     }
 
-    const v = await ethers.provider.send('evm_increaseTime', [n]).then(parseInt);
-    await ethers.provider.send('hardhat_mine', []);
+    const v = await provider.send('evm_increaseTime', [n]).then(parseInt);
+    await provider.send('hardhat_mine', []);
     return v;
   };
 
@@ -20,8 +22,8 @@ function TimeUtils(ethers: HardhatEthers) {
       throw Error(`Invalid timestamp argument: ${timestamp}`);
     }
 
-    const v = await ethers.provider.send('evm_setNextBlockTimestamp', [timestamp]).then(parseInt);
-    await ethers.provider.send('hardhat_mine', []);
+    const v = await provider.send('evm_setNextBlockTimestamp', [timestamp]).then(parseInt);
+    await provider.send('hardhat_mine', []);
     return v;
   };
 

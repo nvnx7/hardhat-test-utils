@@ -2,16 +2,17 @@ import { Block, HardhatEthers, BigNumber } from '../types';
 
 function BlockUtils(ethers: HardhatEthers) {
   const {
-    utils: { hexValue },
+    provider,
     BigNumber: BN,
+    utils: { hexValue },
   } = ethers;
 
   const isAutomine = (): Promise<boolean> => {
-    return ethers.provider.send('hardhat_getAutomine', []);
+    return provider.send('hardhat_getAutomine', []);
   };
 
   const setAutomine = (enabled: boolean): Promise<boolean> => {
-    return ethers.provider.send('evm_setAutomine', [!!enabled]);
+    return provider.send('evm_setAutomine', [!!enabled]);
   };
 
   const setIntervalMining = (ms: number | BigNumber): Promise<boolean> => {
@@ -23,15 +24,15 @@ function BlockUtils(ethers: HardhatEthers) {
       throw Error(`Cannot set negative interval mining: ${ms}`);
     }
 
-    return ethers.provider.send('evm_setIntervalMining', [ms]);
+    return provider.send('evm_setIntervalMining', [ms]);
   };
 
   const latest = (): Promise<Block> => {
-    return ethers.provider.getBlock('latest');
+    return provider.getBlock('latest');
   };
 
   const latestBlockNumber = (): Promise<number> => {
-    return ethers.provider.getBlockNumber();
+    return provider.getBlockNumber();
   };
 
   const advanceBlock = (
@@ -50,7 +51,7 @@ function BlockUtils(ethers: HardhatEthers) {
       throw Error(`Cannot advance negative blocks: ${n}`);
     }
 
-    return ethers.provider.send('hardhat_mine', [hexValue(n), hexValue(interval)]);
+    return provider.send('hardhat_mine', [hexValue(n), hexValue(interval)]);
   };
 
   const advanceBlockTo = async (
