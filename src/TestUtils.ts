@@ -1,5 +1,5 @@
 import { HardhatEthers, ITestUtils } from './types';
-import { BlockUtils, Constants, TimeUtils } from './internal';
+import { AddressUtils, BlockUtils, Constants, TimeUtils } from './internal';
 
 export function TestUtils(ethers: HardhatEthers): ITestUtils {
   return {
@@ -7,5 +7,6 @@ export function TestUtils(ethers: HardhatEthers): ITestUtils {
     constants: Constants(ethers),
     block: BlockUtils(ethers),
     time: TimeUtils(ethers),
+    address: AddressUtils(ethers),
   };
 }

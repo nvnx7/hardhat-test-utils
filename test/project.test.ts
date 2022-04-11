@@ -6,7 +6,7 @@ describe('Integration', function () {
   describe('Hardhat Runtime Environment extension', function () {
     useEnvironment('hardhat-project');
     it('Should add the testUtils field', function () {
-      expect(this.hre.testUtils).to.be.have.all.keys('block');
+      expect(this.hre.testUtils).to.be.have.all.keys('BN', 'constants', 'block', 'time', 'address');
     });
   });
 });
