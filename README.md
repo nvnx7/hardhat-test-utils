@@ -1,58 +1,467 @@
-# Hardhat TypeScript plugin boilerplate
+# hardhat-test-utils
 
-This is a sample Hardhat plugin written in TypeScript. Creating a Hardhat plugin
-can be as easy as extracting a part of your config into a different file and
-publishing it to npm.
+Handy utilities for testing contracts in [Hardhat](https://hardhat.org) projects.
 
-This sample project contains an example on how to do that, but also comes with
-many more features:
+## What
 
-- A mocha test suite ready to use
-- TravisCI already setup
-- A package.json with scripts and publishing info
-- Examples on how to do different things
+This plugin provides a set of various utility functions for testing solidity smart contracts that in a [Hardhat](https://hardhat.org) project. It includes:
+
+- Block utils: fetching latest block info, advancing block number, etc.
+- Time utils: fetching current block timestamps, increase time, convert time units to seconds. etc.
+- Address utils: set balance of any address, impersonate as an address, etc.
+- Network utils: snapshot network state, revert to any past snapshot, etc.
+- Constants: some common constants values.
+
+Check [Usage](#usage) section for more details.
 
 ## Installation
 
-To start working on your project, just run
+Install with:
+
+**npm**:
 
 ```bash
-npm install
+npm install --save-dev hardhat-test-utils hardhat ethers @nomiclabs/hardhat-ethers
 ```
 
-## Plugin development
+or, **yarn**:
 
-Make sure to read our [Plugin Development Guide](https://hardhat.org/advanced/building-plugins.html) to learn how to build a plugin.
+```bash
+yarn add -D hardhat-test-utils hardhat ethers @nomiclabs/hardhat-ethers
+```
 
-## Testing
+Import the plugin in your `hardhat.config.js`:
 
-Running `npm run test` will run every test located in the `test/` folder. They
-use [mocha](https://mochajs.org) and [chai](https://www.chaijs.com/),
-but you can customize them.
+```js
+require('hardhat-test-utils');
+```
 
-We recommend creating unit tests for your own modules, and integration tests for
-the interaction of the plugin with Hardhat and its dependencies.
+Or if you are using TypeScript, in your `hardhat.config.ts`:
 
-## Linting and autoformat
+```ts
+import 'hardhat-test-utils';
+```
 
-All of Hardhat projects use [prettier](https://prettier.io/) and
-[tslint](https://palantir.github.io/tslint/).
+## Required plugins
 
-You can check if your code style is correct by running `npm run lint`, and fix
-it with `npm run lint:fix`.
+- [@nomiclabs/hardhat-ethers](https://hardhat.org/plugins/nomiclabs-hardhat-ethers.html)
 
-## Building the project
+## Tasks
 
-Just run `npm run build` ️👷
+This plugin creates no additional tasks.
 
-## README file
+## Environment extensions
 
-This README describes this boilerplate project, but won't be very useful to your
-plugin users.
+This plugin adds `testUtils` object to Hardhat Runtime Environment.
+See [API](#api) section for more details.
 
-Take a look at `README-TEMPLATE.md` for an example of what a Hardhat plugin's
-README should look like.
+## Usage
 
-## Migrating from Buidler?
+There are no additional steps you need to take for this plugin to work.
 
-Take a look at [the migration guide](MIGRATION.md)!
+Install it and access `testUtils` through the Hardhat Runtime Environment anywhere
+you need it (tasks, scripts, tests, etc). For example:
+
+```js
+const { testUtils } = require('hardhat');
+
+const { time, address, constants } = testUtils;
+
+describe('my tests', function () {
+  it('simulates passing of time', async function () {
+    const oneHourInSeconds = time.duration.hours(1);
+    await time.increase(oneHourInSeconds);
+  });
+
+  it('sets the balance of an address', async function () {
+    const userAddr = '0x....';
+    const newBalance = constants.WEI_PER_ETHER; // 1 ether
+    await address.setBalance(userAddr, newBalance);
+  });
+});
+```
+
+## API
+
+The `testUtils` objects exposes following properties with methods:
+
+### `block`
+
+Exposes methods to manipulate blocks.
+
+```js
+const { block } = testUtils;
+```
+
+---
+
+#### `block.getAutomine()`
+
+Returns true if automatic mining is enabled, and false otherwise. See [Mining Modes](https://hardhat.org/hardhat-network/explanation/mining-modes.html) to learn more.
+
+##### Params
+
+None
+
+##### Returns
+
+`<Promise<boolean>>`: `true` if automatic mining is enabled, and `false` otherwise.
+
+---
+
+#### `block.setAutomine(enabled: boolean)`
+
+Sets automatic mining mode. See [Mining Modes](https://hardhat.org/hardhat-network/explanation/mining-modes.html) to learn more.
+
+##### Params
+
+- `enabled: boolean`: `true` to enable automatic mining, `false` to disable it.
+
+##### Returns
+
+`<Promise<boolean>>`: Result of the rpc call.
+
+---
+
+#### `block.setIntervalMine(interval: number | BigNumber)`
+
+Enables (with a numeric argument greater than 0) or disables (with a numeric argument equal to 0), the automatic mining of blocks at a regular interval of milliseconds, each of which will include all pending transactions. See also [Mining Modes](https://hardhat.org/hardhat-network/explanation/mining-modes.html).
+
+##### Params
+
+- `interval: number | BigNumber`: Interval in milliseconds.
+
+##### Returns
+
+`<Promise<boolean>>`: Result of the rpc call.
+
+---
+
+#### `block.latest()`
+
+Returns the latest block information. This is same as calling `provider.getBlock('latest')` with [ethers](https://docs.ethers.io/v5/api/providers/provider/#Provider-getBlock).
+
+##### Params
+
+None
+
+##### Returns
+
+`<Promise<Block>>`: Latest block information.
+
+---
+
+#### `block.latestBlockNumber()`
+
+Returns the latest block number. This is same as calling `provider.getBlockNumber()` with [ethers](https://docs.ethers.io/v5/api/providers/provider/#Provider-getBlockNumber).
+
+##### Params
+
+None
+
+##### Returns
+
+`<Promise<number>>`: Latest block number.
+
+---
+
+#### `block.advance(n: number | BigNumber = 1, interval: number | BigNumber = 1)`
+
+Forces `n` number of blocks to be mined, incrementing the block height by `n`.
+
+##### Params
+
+- `n: number | BigNumber`: Number of blocks to mine. Defaults to `1`.
+- `interval: number | BigNumber`: Interval between the timestamps of each block, in seconds. Defaults to `1`.
+
+##### Returns
+
+`<Promise<boolean>>`: Result of the rpc call.
+
+**NOTE**: This method can mine any number of blocks at once, in constant time. It exhibits the same performance no matter how many blocks are mined.
+
+---
+
+#### `block.advanceTo(target: number | BigNumber, interval: number | BigNumber = 1)`
+
+Forces blocks to be mined until the `target` height` is reached.
+
+##### Params
+
+- `target: number | BigNumber`: Target block height.
+- `interval: number | BigNumber`: Interval between the timestamps of each block, in seconds. Defaults to `1`.
+
+##### Returns
+
+`<Promise<boolean>>`: Result of the rpc call.
+
+---
+
+---
+
+### `time`
+
+Simulates passing of time.
+
+```js
+const { time } = testUtils;
+```
+
+---
+
+#### `time.latest()`
+
+Gets the latest block timestamp.
+
+##### Params
+
+None
+
+##### Returns
+
+`<Promise<number>>`: Latest block timestamp.
+
+---
+
+#### `time.increase(duration: number | BigNumber)`
+
+Increases blockchain's time by `duration` seconds and mines a new block.
+
+##### Params
+
+- `duration: number | BigNumber`: Number of seconds to increase the time by.
+
+##### Returns
+
+`<Promise<number>>`: Total time adjustment, in seconds.
+
+---
+
+#### `time.increaseTo(target: number | BigNumber)`
+
+Same as `time.increase()`, but takes the exact timestamp that you want in the next block, and mines that block.
+
+##### Params
+
+- `target: number | BigNumber`: Target timestamp for the newly mined block.
+
+##### Returns
+
+`<Promise<number>>`: Total time adjustment, in seconds.
+
+---
+
+#### `time.duration.<unit>(value: number | BigNumber)`
+
+An set of `duration` object methods to convert time units to seconds. For example:
+
+```js
+time.duration.minutes(1); // 60
+time.duration.hours(1); // 3600
+time.duration.days(1); // 86400
+time.duration.weeks(1); // 604800
+time.duration.years(1); // 31536000
+```
+
+Available units are `minutes`, `hours`, `days`, `weeks`, `years`.
+
+##### Params
+
+- `value: number | BigNumber`: Value in a time unit to convert to number of seconds.
+
+##### Returns
+
+`<Promise<number>>`: Number of seconds.
+
+---
+
+---
+
+### `address`
+
+Manipulate addresses.
+
+```js
+const { address } = testUtils;
+```
+
+---
+
+#### `address.isValid(addr: string)`
+
+Returns true if `addr` is valid ethereum address, false otherwise.
+
+##### Params
+
+- `addr: string`: address to check
+
+##### Returns
+
+`boolean`: true if `addr` is valid ethereum address, false otherwise.
+
+---
+
+#### `address.balance(addr: string)`
+
+Returns balance of given address in wei unit.
+
+##### Params
+
+- `addr: string`: address to fetch balance of.
+
+##### Returns
+
+`<Promise<BigNumber>>`: balance of given address in wei.
+
+---
+
+#### `address.balanceEth(addr: string)`
+
+Returns balance of given address in eth unit.
+
+##### Params
+
+- `addr: string`: address to fetch balance of.
+
+#### Returns
+
+`<Promise<BigNumber>>`: balance of given address in eth.
+
+---
+
+#### `address.setBalance(addr: string, balance: number | BigNumber)`
+
+Modify the balance of given address.
+
+##### Params
+
+- `addr: string`: address to modify balance of.
+- `balance: number | BigNumber`: new balance of given address.
+
+##### Returns
+
+`<Promise<boolean>>`: result of the rpc call.
+
+---
+
+#### `address.impersonate(addr: string)`
+
+Impersonate as specific account and contract addresses and returns the corresponding ethers [`Signer`](https://docs.ethers.io/v5/api/signer/#Signer). See [hardhat_impersonateAccount](https://hardhat.org/hardhat-network/reference/#hardhat-impersonateaccount)
+
+##### Params
+
+- `addr: string`: address to impersonate.
+
+##### Returns
+
+`<Promise<Signer>>`: Signer corresponding to impersonated account.
+
+---
+
+#### `address.stopImpersonating(addr: string)`
+
+Stops impersonating an account after having previously used `address.impersonate()`.
+
+##### Params
+
+- `addr: string`: address to stop impersonating.
+
+##### Returns
+
+`<Promise<boolean>>`: result of the rpc call.
+
+---
+
+---
+
+### `network`
+
+Blockchain network utilities.
+
+```js
+const { network } = testUtils;
+```
+
+---
+
+#### `network.snapshot()`
+
+Takes snapshot of current network state.
+
+##### Params
+
+None
+
+##### Returns
+
+`<Promise<string>>`: Snapshot id
+
+---
+
+#### `network.revert(snapshotId: string)`
+
+Reverts the state of network to a previous snapshot.
+
+##### Params
+
+- `snapshotId: string`: Id of snapshot to revert to.
+
+##### Returns
+
+`<Promise<boolean>>`: Result of the rpc call.
+
+---
+
+---
+
+### `constants`
+
+Some useful constants.
+
+```js
+const { constants } = testUtils;
+```
+
+---
+
+#### `constants.ZERO_ADDRESS: string`
+
+The zero ethereum address - `0x0000000000000000000000000000000000000000`
+
+---
+
+#### `constants.ZERO_BYTES32: string`
+
+The zero 32 bytes array - `0x0000000000000000000000000000000000000000000000000000000000000000`
+
+---
+
+#### `constants.MAX_UINT256: BigNumber`
+
+The `BigNumber` value representing the maximum `uint256` value.
+
+---
+
+#### `constants.MAX_INT256: BigNumber`
+
+The `BigNumber` value representing the maximum `int256` value.
+
+---
+
+#### `constants.MIN_INT256: BigNumber`
+
+The `BigNumber` value representing the minimum `int256` value.
+
+---
+
+#### `constants.WEI_PER_ETHER: BigNumber`
+
+The `BigNumber` value representing `1000000000000000000`, which is the number of wei per ether.
+
+---
+
+---
+
+#### `BN`
+
+Shorthand for ethers [`BigNumber`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber) object.
