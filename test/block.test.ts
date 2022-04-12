@@ -62,7 +62,7 @@ describe('block', function () {
       const block = this.hre.testUtils.block;
 
       const startBlock = await block.latestBlockNumber();
-      await block.advanceBlock(420);
+      await block.advance(420);
       expect(await block.latestBlockNumber()).to.equal(startBlock + 420);
     });
 
@@ -70,7 +70,7 @@ describe('block', function () {
       const block = this.hre.testUtils.block;
 
       const startBlock = await block.latestBlockNumber();
-      await block.advanceBlock();
+      await block.advance();
       expect(await block.latestBlockNumber()).to.equal(startBlock + 1);
     });
 
@@ -78,16 +78,16 @@ describe('block', function () {
       const block = this.hre.testUtils.block;
 
       const startBlock = await block.latestBlockNumber();
-      await block.advanceBlockTo(startBlock + 420);
+      await block.advanceTo(startBlock + 420);
       expect(await block.latestBlockNumber()).to.equal(startBlock + 420);
     });
 
     it('throws for past block advance', async function () {
       const block = this.hre.testUtils.block;
 
-      await block.advanceBlock(66);
+      await block.advance(66);
       const latestBlock = await block.latestBlockNumber();
-      await expect(block.advanceBlockTo(latestBlock - 1)).to.eventually.be.rejectedWith(Error);
+      await expect(block.advanceTo(latestBlock - 1)).to.eventually.be.rejectedWith(Error);
     });
   });
 });

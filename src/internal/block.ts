@@ -35,9 +35,9 @@ function BlockUtils(ethers: HardhatEthers) {
     return provider.getBlockNumber();
   };
 
-  const advanceBlock = (
+  const advance = (
     n: number | BigNumber = 1,
-    interval: number | BigNumber = 60,
+    interval: number | BigNumber = 1,
   ): Promise<boolean> => {
     if (BN.isBigNumber(n)) {
       n = n.toNumber();
@@ -54,9 +54,9 @@ function BlockUtils(ethers: HardhatEthers) {
     return provider.send('hardhat_mine', [hexValue(n), hexValue(interval)]);
   };
 
-  const advanceBlockTo = async (
+  const advanceTo = async (
     target: number | BigNumber,
-    interval: number | BigNumber = 60,
+    interval: number | BigNumber = 1,
   ): Promise<boolean> => {
     if (BN.isBigNumber(target)) {
       target = target.toNumber();
@@ -69,7 +69,7 @@ function BlockUtils(ethers: HardhatEthers) {
       );
     }
 
-    return advanceBlock(target - latest, interval);
+    return advance(target - latest, interval);
   };
 
   return {
@@ -77,8 +77,8 @@ function BlockUtils(ethers: HardhatEthers) {
     setAutomine,
     latest,
     latestBlockNumber,
-    advanceBlock,
-    advanceBlockTo,
+    advance,
+    advanceTo,
     setIntervalMining,
   };
 }
