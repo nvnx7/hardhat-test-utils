@@ -52,8 +52,16 @@ This plugin creates no additional tasks.
 
 ## Environment extensions
 
-This plugin adds `testUtils` object to Hardhat Runtime Environment.
-See [API](#api) section for more details.
+This plugin adds `testUtils` object to Hardhat Runtime Environment. This object exposes following properties to manipulate corresponding aspects:
+
+- [block](#block): Block related utilities.
+- [time](#time): Time related utilities.
+- [address](#address): Address related utilities.
+- [network](#network): Network related utilities.
+- [constants](#constants): Common constants.
+- [BN](#bn): Shorthand for ethers [`BigNumber`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber) object.
+
+See [API](#api).
 
 ## Usage
 
@@ -462,6 +470,6 @@ The `BigNumber` value representing `1000000000000000000`, which is the number of
 
 ---
 
-#### `BN`
+### `BN`
 
 Shorthand for ethers [`BigNumber`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber) object.
