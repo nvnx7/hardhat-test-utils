@@ -34,6 +34,7 @@
     "@types/fs-extra": "^5.0.4",
     "@types/mocha": "^5.2.6",
     "@types/node": "^8.10.38",
+    "@types/sinon-chai": "^3.2.8",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "ethereum-waffle": "^3.4.4",
