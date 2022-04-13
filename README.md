@@ -1,18 +1,12 @@
-# hardhat-test-utils
+# hardhat-test-utils 🛠
 
 Handy utilities for testing contracts in [Hardhat](https://hardhat.org) projects.
 
 ## What
 
-This plugin provides a set of various utility functions for testing solidity smart contracts that in a [Hardhat](https://hardhat.org) project. It includes:
+This plugin provides a set of various utility functions for testing solidity smart contracts that in a [Hardhat](https://hardhat.org) project.
 
-- Block utils: fetching latest block info, advancing block number, etc.
-- Time utils: fetching current block timestamps, increase time, convert time units to seconds. etc.
-- Address utils: set balance of any address, impersonate as an address, etc.
-- Network utils: snapshot network state, revert to any past snapshot, etc.
-- Constants: some common constants values.
-
-Check [Usage](#usage) section for more details.
+Check [Usage](#usage) or [API](#api) section for more details.
 
 ## Installation
 
@@ -54,12 +48,12 @@ This plugin creates no additional tasks.
 
 This plugin adds `testUtils` object to Hardhat Runtime Environment. This object exposes following properties to manipulate corresponding aspects:
 
-- [block](#block): Block related utilities.
-- [time](#time): Time related utilities.
-- [address](#address): Address related utilities.
-- [network](#network): Network related utilities.
-- [constants](#constants): Common constants.
-- [BN](#bn): Shorthand for ethers [`BigNumber`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber) object.
+- [🧱 block](#block-🧱): Block related utilities.
+- [⏳ time](#time-⏳): Time related utilities.
+- [📃 address](#address-📃): Address related utilities.
+- [⛓️ network](#network-⛓️): Network related utilities.
+- [🔩 constants](#constants-🔩): Common constants.
+- [1️⃣ BN](#bn-1️⃣): Shorthand for ethers [`BigNumber`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber) object.
 
 See [API](#api).
 
@@ -93,7 +87,7 @@ describe('my tests', function () {
 
 The `testUtils` objects exposes following properties with methods:
 
-### `block`
+### `block` 🧱
 
 Exposes methods to manipulate blocks.
 
@@ -207,7 +201,7 @@ Forces blocks to be mined until the `target` height` is reached.
 
 ---
 
-### `time`
+### `time` ⏳ 
 
 Simulates passing of time.
 
@@ -285,7 +279,7 @@ Available units are `minutes`, `hours`, `days`, `weeks`, `years`.
 
 ---
 
-### `address`
+### `address` 📃
 
 Manipulate addresses.
 
@@ -382,7 +376,7 @@ Stops impersonating an account after having previously used `address.impersonate
 
 ---
 
-### `network`
+### `network` ⛓️
 
 Blockchain network utilities.
 
@@ -422,7 +416,7 @@ Reverts the state of network to a previous snapshot.
 
 ---
 
-### `constants`
+### `constants` 🔩
 
 Some useful constants.
 
@@ -470,6 +464,6 @@ The `BigNumber` value representing `1000000000000000000`, which is the number of
 
 ---
 
-### `BN`
+### `BN` 1️⃣
 
 Shorthand for ethers [`BigNumber`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber) object.
