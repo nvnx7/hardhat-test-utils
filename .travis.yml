@@ -1,19 +1,17 @@
 language: node_js
 
 node_js:
-  - "8"
-  - "10"
-  - "11"
+  - '16'
 
 install:
-  - npm ci
+  - yarn install --frozen-lockfile
 
 script:
-  - npm run test
-  - npm run lint
+  - yarn test
+  - yarn build
 
-cache: npm
+cache: yarn
 
 branches:
   only:
-    - master
+    - main
