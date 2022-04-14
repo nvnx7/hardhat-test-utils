@@ -1,5 +1,7 @@
 # hardhat-test-utils 🛠
 
+![ci](https://github.com/theNvN/hardhat-test-utils/actions/workflows/ci.yml/badge.svg)
+
 Handy utilities for testing contracts in [Hardhat](https://hardhat.org) projects.
 
 ## What
