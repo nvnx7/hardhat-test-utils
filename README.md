@@ -1,6 +1,6 @@
 # hardhat-test-utils 🛠
 
-![ci](https://github.com/theNvN/hardhat-test-utils/actions/workflows/ci.yml/badge.svg)
+[![Node.js CI](https://github.com/theNvN/hardhat-test-utils/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/theNvN/hardhat-test-utils/actions/workflows/ci.yml)
 
 Handy utilities for testing contracts in [Hardhat](https://hardhat.org) projects.
 
