@@ -1,5 +1,6 @@
 # hardhat-test-utils 🛠
 
+[![npm version](https://badge.fury.io/js/hardhat-test-utils.svg)](https://badge.fury.io/js/hardhat-test-utils)
 [![Node.js CI](https://github.com/theNvN/hardhat-test-utils/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/theNvN/hardhat-test-utils/actions/workflows/ci.yml)
 
 Handy utilities for testing contracts in [Hardhat](https://hardhat.org) projects.
