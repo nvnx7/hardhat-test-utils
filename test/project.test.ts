@@ -13,6 +13,7 @@ describe('Integration', function () {
         'time',
         'address',
         'network',
+        'abi',
       );
     });
   });
