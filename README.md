@@ -55,6 +55,7 @@ This plugin adds `testUtils` object to Hardhat Runtime Environment. This object 
 - [⏳ time](#time-⏳): Time related utilities.
 - [📃 address](#address-📃): Address related utilities.
 - [⛓️ network](#network-⛓️): Network related utilities.
+- [🔡 abi](#abi-🔡): ABI related utilities.
 - [🔩 constants](#constants-🔩): Common constants.
 - [1️⃣ BN](#bn-1️⃣): Shorthand for ethers [`BigNumber`](https://docs.ethers.io/v5/api/utils/bignumber/#BigNumber) object.
 
@@ -156,7 +157,7 @@ None
 
 ---
 
-#### `block.latestBlockNumber()`
+#### `block.latestNumber()`
 
 Returns the latest block number. This is same as calling `provider.getBlockNumber()` with [ethers](https://docs.ethers.io/v5/api/providers/provider/#Provider-getBlockNumber).
 
@@ -170,7 +171,7 @@ None
 
 ---
 
-#### `block.advance(n: number | BigNumber = 1, interval: number | BigNumber = 1)`
+#### `block.advance(n: number | BigNumber, interval: number | BigNumber)`
 
 Forces `n` number of blocks to be mined, incrementing the block height by `n`.
 
@@ -187,7 +188,7 @@ Forces `n` number of blocks to be mined, incrementing the block height by `n`.
 
 ---
 
-#### `block.advanceTo(target: number | BigNumber, interval: number | BigNumber = 1)`
+#### `block.advanceTo(target: number | BigNumber, interval: number | BigNumber)`
 
 Forces blocks to be mined until the `target` height` is reached.
 
@@ -414,6 +415,44 @@ Reverts the state of network to a previous snapshot.
 ##### Returns
 
 `<Promise<boolean>>`: Result of the rpc call.
+
+---
+
+---
+
+### `abi` 🔡
+Abi encoding utilities.
+
+```js
+const { abi } = testUtils;
+```
+---
+
+#### `abi.encodeFunctionSignature(func: string)`
+
+Outputs the function selector of a function.
+
+##### Params
+
+- `func: string`: Function name with parameter types. E.g. `"transfer(address,uint256)"`
+
+##### Returns
+
+`string`: Function selector.
+
+---
+
+#### `abi.encodeFunctionCall(func: string, args: any[])`
+Outputs the encoded function call.
+
+##### Params
+
+- `func: string`: Function name with parameter types. E.g. `"transfer(address,uint256)"`
+- `args: any[]`: Function arguments. E.g. `["0xd55..64b", "10000000"]`
+
+##### Returns
+
+`string`: Abi encoded function call.
 
 ---
 

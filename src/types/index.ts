@@ -1,7 +1,14 @@
 import type { ethers } from 'ethers';
 import type EthersT from 'ethers';
 import { HardhatEthersHelpers } from '@nomiclabs/hardhat-ethers/types';
-import type { Constants, BlockUtils, TimeUtils, AddressUtils, NetworkUtils } from '../internal';
+import type {
+  Constants,
+  BlockUtils,
+  TimeUtils,
+  AddressUtils,
+  NetworkUtils,
+  AbiUtils,
+} from '../internal';
 
 export interface ITestUtils {
   BN: typeof EthersT.BigNumber;
@@ -10,6 +17,7 @@ export interface ITestUtils {
   time: ReturnType<typeof TimeUtils>;
   address: ReturnType<typeof AddressUtils>;
   network: ReturnType<typeof NetworkUtils>;
+  abi: ReturnType<typeof AbiUtils>;
 }
 
 export type HardhatEthers = typeof ethers & HardhatEthersHelpers;

@@ -1,6 +1,6 @@
 {
   "name": "hardhat-test-utils",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Handy utilities for testing contracts in Hardhat projects",
   "homepage": "https://github.com/theNvN/hardhat-test-utils#readme",
   "repository": "github:theNvnN/hardhat-test-utils",
