@@ -31,7 +31,7 @@ function BlockUtils(ethers: HardhatEthers) {
     return provider.getBlock('latest');
   };
 
-  const latestBlockNumber = (): Promise<number> => {
+  const latestNumber = (): Promise<number> => {
     return provider.getBlockNumber();
   };
 
@@ -62,7 +62,7 @@ function BlockUtils(ethers: HardhatEthers) {
       target = target.toNumber();
     }
 
-    const latest = await latestBlockNumber();
+    const latest = await latestNumber();
     if (target <= latest) {
       throw Error(
         `Cannot advance to the block number ${target} which is not greater that current block number ${latest}`,
@@ -76,7 +76,7 @@ function BlockUtils(ethers: HardhatEthers) {
     isAutomine,
     setAutomine,
     latest,
-    latestBlockNumber,
+    latestNumber,
     advance,
     advanceTo,
     setIntervalMining,

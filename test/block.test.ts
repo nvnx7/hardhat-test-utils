@@ -55,38 +55,38 @@ describe('block', function () {
       const block = this.hre.testUtils.block;
 
       const latestBlock = await block.latest();
-      expect(await block.latestBlockNumber()).to.equal(latestBlock.number);
+      expect(await block.latestNumber()).to.equal(latestBlock.number);
     });
 
     it('advances block by a number', async function () {
       const block = this.hre.testUtils.block;
 
-      const startBlock = await block.latestBlockNumber();
+      const startBlock = await block.latestNumber();
       await block.advance(420);
-      expect(await block.latestBlockNumber()).to.equal(startBlock + 420);
+      expect(await block.latestNumber()).to.equal(startBlock + 420);
     });
 
     it('advances block', async function () {
       const block = this.hre.testUtils.block;
 
-      const startBlock = await block.latestBlockNumber();
+      const startBlock = await block.latestNumber();
       await block.advance();
-      expect(await block.latestBlockNumber()).to.equal(startBlock + 1);
+      expect(await block.latestNumber()).to.equal(startBlock + 1);
     });
 
     it('advances block to number', async function () {
       const block = this.hre.testUtils.block;
 
-      const startBlock = await block.latestBlockNumber();
+      const startBlock = await block.latestNumber();
       await block.advanceTo(startBlock + 420);
-      expect(await block.latestBlockNumber()).to.equal(startBlock + 420);
+      expect(await block.latestNumber()).to.equal(startBlock + 420);
     });
 
     it('throws for past block advance', async function () {
       const block = this.hre.testUtils.block;
 
       await block.advance(66);
-      const latestBlock = await block.latestBlockNumber();
+      const latestBlock = await block.latestNumber();
       await expect(block.advanceTo(latestBlock - 1)).to.eventually.be.rejectedWith(Error);
     });
   });
